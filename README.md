@@ -1,7 +1,7 @@
 # Statsd.jl
 
-![CI](https://github.com/glenn-m/Statsd.jl/workflows/CI/badge.svg?branch=main)
-![codecov](https://codecov.io/gh/glenn-m/Statsd.jl/branch/main/graph/badge.svg?token=8sLyKwb8ts)
+[![CI](https://github.com/glenn-m/Statsd.jl/workflows/CI/badge.svg?branch=main)](https://github.com/glenn-m/statsd.jl/actions)
+[![codecov](https://codecov.io/gh/glenn-m/Statsd.jl/branch/main/graph/badge.svg?token=8sLyKwb8ts)](https://codecov.io/gh/glenn-m/statsd.jl)
 
 A basic implementation of a Julia StatsD client.
 
