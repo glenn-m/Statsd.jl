@@ -1,7 +1,6 @@
 module Statsd
 
 using Sockets
-using DataStructures
 
 mutable struct Client
     host::IPv4
