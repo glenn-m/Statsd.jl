@@ -17,35 +17,43 @@ end
 
 @testset "Statsd" begin
     sock = test_setup()
-    sd = Statsd.Client("localhost", 8124)
-    @test sd.host == IPv4("127.0.0.1")
-    @test sd.port == 8124
-    @test typeof(sd.sock) == UDPSocket
+    client = Statsd.Client("localhost", 8124)
+    @test client.host == IPv4("127.0.0.1")
+    @test client.port == 8124
+    @test typeof(client.sock) == UDPSocket
 
     # Test Counter
-    Statsd.incr(sd, "test")
+    Statsd.incr(client, "test")
     @test read_statsd(sock) == "test:1|c"
-    Statsd.decr(sd, "test")
+    Statsd.decr(client, "test")
     @test read_statsd(sock) == "test:-1|c"
-    Statsd.incr(sd, "test", 0.1)
+    Statsd.incr(client, "test", 0.1)
     @test read_statsd(sock) == "test:1|c@0.1"
-    Statsd.decr(sd, "test", 0.2)
+    Statsd.decr(client, "test", 0.2)
     @test read_statsd(sock) == "test:-1|c@0.2"
 
     # Test Gauge
-    Statsd.gauge(sd, "test", 1234)
+    Statsd.gauge(client, "test", 1234)
     @test read_statsd(sock) == "test:1234|g"
-    Statsd.gauge(sd, "test", 1234, 0.3)
+    Statsd.gauge(client, "test", 1234, 0.3)
     @test read_statsd(sock) == "test:1234|g@0.3"
     # Test Timing
-    Statsd.timing(sd, "test", 0.3)
+    Statsd.timing(client, "test", 0.3)
     @test read_statsd(sock) == "test:0.3|ms"
-    Statsd.timing(sd, "test", 0.3, 0.4)
+    Statsd.timing(client, "test", 0.3, 0.4)
     @test read_statsd(sock) == "test:0.3|ms@0.4"
 
     # Test Set
-    Statsd.set(sd, "test", 4)
+    Statsd.set(client, "test", 4)
     @test read_statsd(sock) == "test:4|s"
-    Statsd.set(sd, "test", 4, 0.5)
+    Statsd.set(client, "test", 4, 0.5)
     @test read_statsd(sock) == "test:4|s@0.5"
+
+    # Test sc_send
+    Statsd.sc_send(client, "arbitrary string")
+    @test read_statsd(sock) == "arbitrary string"
+
+    # Test sc_metric
+    Statsd.sc_metric(client, "g", "test", 9, 0.2)
+    @test read_statsd(sock) == "test:9|g@0.2"
 end
