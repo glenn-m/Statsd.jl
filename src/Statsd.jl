@@ -30,7 +30,7 @@ set(sc::Client, metric, value, rate=nothing) = sc_metric(sc, "s", metric, value,
 
 # Generate the metric and call send func
 function sc_metric(sc::Client, type, metric, value, rate)
-    if isnothing(rate)
+    if rate == nothing
         sc_send(sc, "$metric:$value|$type")
     else
         sc_send(sc, "$metric:$value|$type@$rate")
