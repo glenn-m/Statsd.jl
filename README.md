@@ -1,5 +1,7 @@
 # Statsd.jl
 
+![CI](https://github.com/glenn-m/Statsd.jl/workflows/CI/badge.svg?branch=main)
+
 A basic implementation of a Julia StatsD client.
 
 ## Quickstart
