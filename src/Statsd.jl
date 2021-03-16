@@ -6,10 +6,11 @@ mutable struct Client
     host::IPv4
     port::Integer
     sock::IO
-    function Client(host::String="localhost", port::Integer=8125)
+    prefix::String
+    function Client(host::String="localhost", port::Integer=8125, prefix="")
         host = getaddrinfo(host)
         sock = UDPSocket()
-        new(host, port, sock)
+        new(host, port, sock, prefix)
     end
 end
 
@@ -30,9 +31,9 @@ set(sc::Client, metric, value, rate=nothing) = sc_metric(sc, "s", metric, value,
 # Generate the metric and call send func
 function sc_metric(sc::Client, type, metric, value, rate)
     if rate == nothing
-        sc_send(sc, "$metric:$value|$type")
+        sc_send(sc, (isempty(sc.prefix) ? "" : "$(sc.prefix).") * "$metric:$value|$type")
     else
-        sc_send(sc, "$metric:$value|$type@$rate")
+        sc_send(sc, (isempty(sc.prefix) ? "" : "$(sc.prefix).") * "$metric:$value|$type@$rate")
     end
 end
 
