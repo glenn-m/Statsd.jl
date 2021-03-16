@@ -56,4 +56,21 @@ end
     # Test sc_metric
     Statsd.sc_metric(client, "g", "test", 9, 0.2)
     @test read_statsd(sock) == "test:9|g@0.2"
+
+    # Test prefix
+    client = Statsd.Client("localhost", 8124, "company.project.cluster")
+    @test client.host == IPv4("127.0.0.1")
+    @test client.port == 8124
+    @test client.prefix == "company.project.cluster"
+    @test typeof(client.sock) == UDPSocket
+
+    # Test Counter
+    Statsd.incr(client, "test")
+    @test read_statsd(sock) == "company.project.cluster.test:1|c"
+    Statsd.decr(client, "test")
+    @test read_statsd(sock) == "company.project.cluster.test:-1|c"
+    Statsd.incr(client, "test", 0.1)
+    @test read_statsd(sock) == "company.project.cluster.test:1|c@0.1"
+    Statsd.decr(client, "test", 0.2)
+    @test read_statsd(sock) == "company.project.cluster.test:-1|c@0.2"
 end
