@@ -16,11 +16,11 @@ julia> using Statsd
 
 `Statsd.jl` defaults to sending metrics to `127.0.0.1:8125`.
 
-You can specify a hostname and port as well.
+You can specify a hostname, port and a prefix as well.
 
 ```julia
 # Setup the statsd client
-client = Statsd.Client("172.10.0.3", 9003)
+client = Statsd.Client("172.10.0.3", 9003, "company.project.cluster")
 ```
 
 #### Counters
