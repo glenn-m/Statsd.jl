@@ -1,7 +1,7 @@
 name = "Statsd"
 uuid = "3a38cb31-b91a-4cb6-a3cc-e596c78fb826"
 authors = ["Glenn McDonald"]
-version = "0.1.0"
+version = "0.2.0"
 
 [deps]
 Sockets = "6462fe0b-24de-5631-8697-dd941f90decc"
